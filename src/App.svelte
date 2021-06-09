@@ -19,6 +19,8 @@
 
     @media screen and (min-width: 768px) {
       background-image: url(../assets/images/bg-desktop-light.jpg);
+      padding-top: 75px;
+      padding-bottom: 75px;
     }
   }
 

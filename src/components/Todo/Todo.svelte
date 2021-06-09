@@ -286,6 +286,7 @@
 
   .main {
     max-width: 540px;
+    padding-bottom: 1rem;
     margin-top: 2.5rem;
     margin-left: auto;
     margin-right: auto;
