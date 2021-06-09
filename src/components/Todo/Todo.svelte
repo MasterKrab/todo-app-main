@@ -211,6 +211,7 @@
   @mixin checkbox {
     display: inline-grid;
     place-items: center;
+    position: relative;
     appearance: none;
     border: 1px solid var(--text-color-2);
     border-radius: 50%;
@@ -223,6 +224,28 @@
 
     @media screen and (min-width: 768px) {
       margin: 20px;
+
+      &:hover {
+        background-image: linear-gradient(
+          var(--linear-gradient-1),
+          var(--linear-gradient-2)
+        );
+
+        &::before {
+          background-color: var(--element-color);
+        }
+      }
+    }
+
+    &::before {
+      content: "";
+      width: 90%;
+      height: 90%;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
 
     &::after {
@@ -239,6 +262,10 @@
         var(--linear-gradient-1),
         var(--linear-gradient-2)
       );
+
+      &::before {
+        background-color: transparent;
+      }
 
       &::after {
         transform: scale(1);
@@ -373,6 +400,7 @@
       transition: color 0.2s;
       text-align: start;
       overflow-wrap: break-word;
+      cursor: pointer;
     }
 
     &__button {
@@ -402,6 +430,14 @@
     color: inherit;
     cursor: pointer;
     @include focus-visible;
+
+    @media screen and (min-width: 768px) {
+      transition: color 0.2s;
+
+      &:hover {
+        color: var(--text-color-hover);
+      }
+    }
   }
 
   .filter {
