@@ -216,7 +216,7 @@
     border: 1px solid var(--text-color-2);
     border-radius: 50%;
     margin: 15px 12px 15px 20px;
-    width: 20px;
+    min-width: 20px;
     height: 20px;
     cursor: pointer;
     @include focus-visible;
