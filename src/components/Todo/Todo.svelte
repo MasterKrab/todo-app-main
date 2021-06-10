@@ -105,7 +105,11 @@
   const handleMouseUp = (e) => {
     mouseIsDown = false;
     if (drag) {
-      let elementDropindex = document.elementsFromPoint(e.clientX, e.clientY);
+      let elementDropindex = document.elementsFromPoint(
+        e.pageX ? e.pageX : e.touches[0].pageX,
+        e.pageY ? e.pageY : e.touches[0].pageY,
+        e.pageY
+      );
 
       elementDropindex =
         parseInt(elementDropindex[1].dataset.index) > elementDragIndex
@@ -120,7 +124,7 @@
   };
 </script>
 
-<svelte:window on:touchmove={handleMouseMove} />
+<svelte:window on:touchmove={handleMouseMove} on:touchend={handleMouseUp} />
 
 <main class="main" class:no-selected={drag}>
   <form class="new-todo" on:submit|preventDefault={handleNewTodo}>
@@ -164,6 +168,7 @@
                 type="checkbox"
                 id={todo.id}
                 bind:checked={todo.done}
+                disabled={drag}
                 class="todo__checkbox"
               />
               <label class="todo__title" for={todo.id}>
@@ -381,8 +386,8 @@
     border-bottom: 1px solid var(--border-color);
     cursor: move;
 
-    @media screen and (min-width: 768px){
-      &:hover > .todo__button{
+    @media screen and (min-width: 768px) {
+      &:hover > .todo__button {
         opacity: 1;
       }
     }
