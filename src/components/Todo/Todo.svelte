@@ -66,6 +66,8 @@
 
   let position = { x: 0, y: 0 };
 
+  let touches = [];
+
   const handleMouseDown = (e) => {
     const todoElement = e.target;
     mouseIsDown = true;
@@ -90,6 +92,8 @@
   const moveGhost = (e) => {
     const elementMoving = document.getElementById(elementDragIndex);
 
+    touches = e.touches;
+
     position.y =
       (e.pageY ? e.pageY : e.touches[0].pageY) -
       elementMoving.offsetHeight / 2 +
@@ -106,9 +110,8 @@
     mouseIsDown = false;
     if (drag) {
       let elementDropindex = document.elementsFromPoint(
-        e.pageX ? e.pageX : e.touches[0].pageX,
-        e.pageY ? e.pageY : e.touches[0].pageY,
-        e.pageY
+        e.pageX ? e.pageX : touches[0].pageX,
+        e.pageY ? e.pageY : touches[0].pageY
       );
 
       elementDropindex =
