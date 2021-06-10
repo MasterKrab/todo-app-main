@@ -151,7 +151,8 @@
               on:mousemove={handleMouseMove}
               on:mouseup={handleMouseUp}
               style={drag && elementDragIndex == index
-                ? `transform: translate(${position.x}px, ${position.y}px); width: ${ghostWidth}px;}`
+                ? `transform: translate(${position.x}px, ${position.y}px); 
+                  --ghost-width: ${ghostWidth}px;`
                 : ""}
               animate:flip={{ duration: drag ? 0 : 100 }}
               in:fade={{ duration: 200 }}
@@ -387,6 +388,10 @@
       top: 0;
       left: 0;
       width: 300px;
+
+      @media screen and (min-width: 768px) {
+        width: var(--ghost-width);
+      }
     }
 
     &__checkbox {
