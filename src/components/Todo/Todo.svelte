@@ -69,10 +69,10 @@
   let touches = [];
 
   const handleMouseDown = (e) => {
-    const todoElement = e.target;
+    const todoElement = e.target.parentElement;
     mouseIsDown = true;
 
-    if (!drag && mouseIsDown && todoElement.classList.contains("todo")) {
+    if (!drag && mouseIsDown && e.target.classList.contains("todo__drag")) {
       let pressed = 0;
 
       const interval = setInterval(() => {
@@ -95,11 +95,11 @@
     touches = e.touches;
 
     position.y =
-      (e.pageY ? e.pageY : e.touches[0].pageY) -
+      (e.pageY ? e.pageY : touches[0].pageY) -
       elementMoving.offsetHeight / 2 +
       document.body.scrollTop;
     position.x =
-      (e.pageX ? e.pageX : e.touches[0].pageX) - elementMoving.offsetWidth / 2;
+      (e.pageX ? e.pageX : touches[0].pageX) - elementMoving.offsetWidth / 2;
   };
 
   const handleMouseMove = (e) => {
@@ -127,7 +127,11 @@
   };
 </script>
 
-<svelte:window on:touchmove={handleMouseMove} on:touchend={handleMouseUp}             on:mousemove={handleMouseMove}/>
+<svelte:window
+  on:touchmove={handleMouseMove}
+  on:touchend={handleMouseUp}
+  on:mousemove={handleMouseMove}
+/>
 
 <main class="main" class:no-selected={drag}>
   <form class="new-todo" on:submit|preventDefault={handleNewTodo}>
@@ -176,6 +180,7 @@
               <label class="todo__title" for={todo.id}>
                 {todo.title}
               </label>
+              <div class="todo__drag" />
               <button
                 type="button"
                 aria-label={`Delete task ${todo.title}`}
@@ -386,11 +391,13 @@
     align-items: center;
     background-color: var(--element-color);
     border-bottom: 1px solid var(--border-color);
-    cursor: move;
+    --button-opacity: 1;
 
     @media screen and (min-width: 768px) {
-      &:hover > .todo__button {
-        opacity: 1;
+      --button-opacity: 0;
+
+      &:hover {
+        --button-opacity: 1;
       }
     }
 
@@ -412,7 +419,6 @@
     }
 
     &__title {
-      max-width: 70%;
       margin-top: 1rem;
       margin-bottom: 1rem;
       margin-right: auto;
@@ -420,6 +426,20 @@
       text-align: start;
       overflow-wrap: break-word;
       cursor: pointer;
+    }
+
+    &__drag {
+      content: url(../assets/images/object-selected.svg);
+      cursor: move;
+      width: 20px;
+      height: 20px;
+      opacity: var(--button-opacity);
+      filter: invert(27%) sepia(38%) saturate(428%) hue-rotate(197deg)
+        brightness(96%) contrast(89%);
+
+      @media screen and (min-width: 768px) {
+        transition: opacity 0.5s;
+      }
     }
 
     &__button {
@@ -433,12 +453,12 @@
       height: 12px;
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
+      opacity: var(--button-opacity);
       @include focus-visible;
       @include scale-hover;
 
       @media screen and (min-width: 768px) {
         transition: opacity 0.5s;
-        opacity: 0;
       }
 
       &:active {
