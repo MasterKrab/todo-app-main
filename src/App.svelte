@@ -7,6 +7,10 @@
 <Todo />
 
 <style lang="scss">
+  :global(html) {
+    overflow-x: hidden;
+  }
+
   :global(body) {
     background-image: url(../assets/images/bg-mobile-light.jpg);
     background-repeat: no-repeat;

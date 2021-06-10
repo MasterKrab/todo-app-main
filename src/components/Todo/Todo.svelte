@@ -15,7 +15,7 @@
   };
 
   const handleNewTodo = () => {
-    if(todo.title.trim().length > 0){
+    if (todo.title.trim().length > 0) {
       todos = [...todos, todo];
       todo = { title: "", id: id(), done: false };
     }
@@ -91,7 +91,9 @@
     const elementMoving = document.getElementById(elementDragIndex);
 
     position.y =
-      (e.pageY ? e.pageY : e.touches[0].pageY) - elementMoving.offsetHeight / 2;
+      (e.pageY ? e.pageY : e.touches[0].pageY) -
+      elementMoving.offsetHeight / 2 +
+      document.body.scrollTop;
     position.x =
       (e.pageX ? e.pageX : e.touches[0].pageX) - elementMoving.offsetWidth / 2;
   };
@@ -118,9 +120,13 @@
   };
 </script>
 
-<svelte:window on:touchmove={handleMouseMove} />
+<svelte:window
+  on:touchmove={handleMouseMove}
+  on:mousemove={handleMouseMove}
+  on:mouseup={handleMouseUp}
+/>
 
-<main class="main">
+<main class="main" class:no-selected={drag}>
   <form class="new-todo" on:submit|preventDefault={handleNewTodo}>
     <input
       type="checkbox"
@@ -149,8 +155,6 @@
               id={index}
               on:mousedown={handleMouseDown}
               on:touchstart={handleMouseDown}
-              on:mousemove={handleMouseMove}
-              on:mouseup={handleMouseUp}
               style={drag && elementDragIndex == index
                 ? `transform: translate(${position.x}px, ${position.y}px); 
                   --ghost-width: ${ghostWidth}px;`
@@ -505,5 +509,9 @@
     @media screen and (max-width: 768px) {
       margin-top: 115px;
     }
+  }
+
+  .no-selected {
+    user-select: none;
   }
 </style>
