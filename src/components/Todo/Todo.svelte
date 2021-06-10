@@ -15,8 +15,10 @@
   };
 
   const handleNewTodo = () => {
-    todos = [...todos, todo];
-    todo = { title: "", id: id(), done: false };
+    if(todo.title.trim().length > 0){
+      todos = [...todos, todo];
+      todo = { title: "", id: id(), done: false };
+    }
   };
 
   const handleDeleteTask = (id) => {
