@@ -73,19 +73,10 @@
     mouseIsDown = true;
 
     if (!drag && mouseIsDown && e.target.classList.contains("todo__drag")) {
-      let pressed = 0;
-
-      const interval = setInterval(() => {
-        mouseIsDown && pressed++;
-
-        if (pressed > 20) {
-          ghostWidth = todoElement.offsetWidth;
-          elementDragIndex = todoElement.dataset.index;
-          drag = true;
-          moveGhost(e);
-          clearInterval(interval);
-        }
-      }, 50);
+      ghostWidth = todoElement.offsetWidth;
+      elementDragIndex = todoElement.dataset.index;
+      drag = true;
+      moveGhost(e);
     }
   };
 
@@ -164,7 +155,7 @@
               on:touchstart={handleMouseDown}
               on:mouseup={handleMouseUp}
               style={drag && elementDragIndex == index
-                ? `transform: translate(${position.x}px, ${position.y}px); 
+                ? `transform: translate(${position.x}px, ${position.y}px) rotate(2.5deg); 
                   --ghost-width: ${ghostWidth}px;`
                 : ""}
               animate:flip={{ duration: drag ? 0 : 100 }}
