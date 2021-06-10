@@ -120,11 +120,7 @@
   };
 </script>
 
-<svelte:window
-  on:touchmove={handleMouseMove}
-  on:mousemove={handleMouseMove}
-  on:mouseup={handleMouseUp}
-/>
+<svelte:window on:touchmove={handleMouseMove} />
 
 <main class="main" class:no-selected={drag}>
   <form class="new-todo" on:submit|preventDefault={handleNewTodo}>
@@ -145,7 +141,7 @@
   </form>
   <div class="todo-result">
     <form>
-      <ul class="todos" class:todos--no-select={drag} aria-live="polite">
+      <ul class="todos" aria-live="polite">
         {#if filterTodos().length > 0}
           {#each filterTodos() as todo, index (todo)}
             <li
@@ -155,6 +151,8 @@
               id={index}
               on:mousedown={handleMouseDown}
               on:touchstart={handleMouseDown}
+              on:mousemove={handleMouseMove}
+              on:mouseup={handleMouseUp}
               style={drag && elementDragIndex == index
                 ? `transform: translate(${position.x}px, ${position.y}px); 
                   --ghost-width: ${ghostWidth}px;`
@@ -367,10 +365,6 @@
     border-top-right-radius: $border-radius;
     overflow: hidden;
     text-align: center;
-
-    &--no-select {
-      user-select: none;
-    }
 
     &__item {
       margin-top: 1.5rem;
