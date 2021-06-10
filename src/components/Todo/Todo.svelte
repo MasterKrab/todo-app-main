@@ -145,7 +145,6 @@
               class:todo--position={drag && elementDragIndex == index}
               data-index={index}
               id={index}
-              on:dragstart={() => false}
               on:mousedown={handleMouseDown}
               on:touchstart={handleMouseDown}
               on:mousemove={handleMouseMove}
