@@ -72,7 +72,7 @@
     const todoElement = e.target.parentElement;
     mouseIsDown = true;
 
-    if (!drag && mouseIsDown && e.target.classList.contains("todo__drag")) {
+    if (!drag && mouseIsDown) {
       ghostWidth = todoElement.offsetWidth;
       elementDragIndex = todoElement.dataset.index;
       drag = true;
@@ -151,8 +151,6 @@
               class:todo--position={drag && elementDragIndex == index}
               data-index={index}
               id={index}
-              on:mousedown={handleMouseDown}
-              on:touchstart={handleMouseDown}
               on:mouseup={handleMouseUp}
               style={drag && elementDragIndex == index
                 ? `transform: translate(${position.x}px, ${position.y}px) rotate(2.5deg); 
@@ -171,7 +169,11 @@
               <label class="todo__title" for={todo.id}>
                 {todo.title}
               </label>
-              <div class="todo__drag" />
+              <div
+                class="todo__drag"
+                on:mousedown={handleMouseDown}
+                on:touchstart={handleMouseDown}
+              />
               <button
                 type="button"
                 aria-label={`Delete task ${todo.title}`}
@@ -228,6 +230,7 @@
     min-width: 20px;
     height: 20px;
     cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
     @include focus-visible;
     @include scale-hover;
 
@@ -425,8 +428,10 @@
       width: 20px;
       height: 20px;
       opacity: var(--button-opacity);
+      -webkit-tap-highlight-color: transparent;
       filter: invert(27%) sepia(38%) saturate(428%) hue-rotate(197deg)
         brightness(96%) contrast(89%);
+      user-select: none;
 
       @media screen and (min-width: 768px) {
         transition: opacity 0.5s;
