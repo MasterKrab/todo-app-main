@@ -87,6 +87,8 @@
 
   const moveGhost = (e) => {
     const elementMoving = document.getElementById(elementDragIndex);
+    console.log(e.touches);
+
     position.y =
       (e.pageY ? e.pageY : e.touches[0].pageY) - elementMoving.offsetHeight / 2;
     position.x =
@@ -94,7 +96,8 @@
   };
 
   const handleMouseMove = (e) => {
-    drag && e.button === 0 ? moveGhost(e) : null;
+    drag && mouseIsDown ? moveGhost(e) : null;
+    // moveGhost(e);
   };
 
   const handleMouseUp = (e) => {
@@ -114,6 +117,8 @@
     }
   };
 </script>
+
+<svelte:window on:touchmove={handleMouseMove} />
 
 <main class="main">
   <form class="new-todo" on:submit|preventDefault={handleNewTodo}>
@@ -146,7 +151,6 @@
               on:mousedown={handleMouseDown}
               on:touchstart={handleMouseDown}
               on:mousemove={handleMouseMove}
-              on:touchmove={handleMouseMove}
               on:mouseup={handleMouseUp}
               style={drag && elementDragIndex == index
                 ? `transform: translate(${position.x}px, ${position.y}px); width: ${ghostWidth}px;}`
