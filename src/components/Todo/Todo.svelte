@@ -127,7 +127,7 @@
   };
 </script>
 
-<svelte:window on:touchmove={handleMouseMove} on:touchend={handleMouseUp} />
+<svelte:window on:touchmove={handleMouseMove} on:touchend={handleMouseUp}             on:mousemove={handleMouseMove}/>
 
 <main class="main" class:no-selected={drag}>
   <form class="new-todo" on:submit|preventDefault={handleNewTodo}>
@@ -158,7 +158,6 @@
               id={index}
               on:mousedown={handleMouseDown}
               on:touchstart={handleMouseDown}
-              on:mousemove={handleMouseMove}
               on:mouseup={handleMouseUp}
               style={drag && elementDragIndex == index
                 ? `transform: translate(${position.x}px, ${position.y}px); 
