@@ -87,7 +87,6 @@
 
   const moveGhost = (e) => {
     const elementMoving = document.getElementById(elementDragIndex);
-    console.log(e.touches);
 
     position.y =
       (e.pageY ? e.pageY : e.touches[0].pageY) - elementMoving.offsetHeight / 2;
@@ -97,7 +96,6 @@
 
   const handleMouseMove = (e) => {
     drag && mouseIsDown ? moveGhost(e) : null;
-    // moveGhost(e);
   };
 
   const handleMouseUp = (e) => {
