@@ -6,7 +6,6 @@
   type="checkbox"
   aria-label="Dark mode"
   class="toggle"
-  on:click={darkMode.toggleTheme($darkMode)}
   bind:checked={$darkMode}
 />
 
@@ -22,7 +21,7 @@
     user-select: none;
     transition: transform 0.3s;
 
-    @media screen and (min-width: 768px){
+    @media screen and (min-width: 768px) {
       width: 30px;
       height: 30px;
     }

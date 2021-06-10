@@ -26,7 +26,7 @@
 
     @media screen and (min-width: 768px) {
       font-size: 2.5rem;
-      letter-spacing: 1.3rem;
+      letter-spacing: 1.2rem;
     }
   }
 </style>

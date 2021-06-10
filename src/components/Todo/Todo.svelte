@@ -381,6 +381,12 @@
     border-bottom: 1px solid var(--border-color);
     cursor: move;
 
+    @media screen and (min-width: 768px){
+      &:hover > .todo__button{
+        opacity: 1;
+      }
+    }
+
     &--position {
       position: absolute;
       z-index: 10000;
@@ -422,6 +428,11 @@
       -webkit-tap-highlight-color: transparent;
       @include focus-visible;
       @include scale-hover;
+
+      @media screen and (min-width: 768px) {
+        transition: opacity 0.5s;
+        opacity: 0;
+      }
 
       &:active {
         background-color: transparent;
