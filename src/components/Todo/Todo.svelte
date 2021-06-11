@@ -140,53 +140,52 @@
       class="new-todo__input"
       bind:value={todo.title}
     />
+    <button class="new-todo__submit" aria-label="Create new todo" />
   </form>
   <div class="todo-result">
-    <form>
-      <ul class="todos" aria-live="polite">
-        {#if filterTodos().length > 0}
-          {#each filterTodos() as todo, index (todo)}
-            <li
-              class="todo"
-              class:todo--position={drag && elementDragIndex == index}
-              data-index={index}
-              id={index}
-              on:mouseup={handleMouseUp}
-              style={drag && elementDragIndex == index
-                ? `transform: translate(${position.x}px, ${position.y}px) rotate(2.5deg); 
+    <ul class="todos" aria-live="polite">
+      {#if filterTodos().length > 0}
+        {#each filterTodos() as todo, index (todo)}
+          <li
+            class="todo"
+            class:todo--position={drag && elementDragIndex == index}
+            data-index={index}
+            id={index}
+            on:mouseup={handleMouseUp}
+            style={drag && elementDragIndex == index
+              ? `transform: translate(${position.x}px, ${position.y}px) rotate(2.5deg); 
                   --ghost-width: ${ghostWidth}px;`
-                : ""}
-              animate:flip={{ duration: drag ? 0 : 100 }}
-              in:fade={{ duration: 200 }}
-            >
-              <input
-                type="checkbox"
-                id={todo.id}
-                bind:checked={todo.done}
-                disabled={drag}
-                class="todo__checkbox"
-              />
-              <label class="todo__title" for={todo.id}>
-                {todo.title}
-              </label>
-              <div
-                class="todo__drag"
-                on:mousedown={handleMouseDown}
-                on:touchstart={handleMouseDown}
-              />
-              <button
-                type="button"
-                aria-label={`Delete task ${todo.title}`}
-                class="todo__button"
-                on:click={handleDeleteTask(todo.id)}
-              />
-            </li>
-          {/each}
-        {:else}
-          <li class="todos__item">No todos yet</li>
-        {/if}
-      </ul>
-    </form>
+              : ""}
+            animate:flip={{ duration: drag ? 0 : 100 }}
+            in:fade={{ duration: 200 }}
+          >
+            <input
+              type="checkbox"
+              id={todo.id}
+              bind:checked={todo.done}
+              disabled={drag}
+              class="todo__checkbox"
+            />
+            <label class="todo__title" for={todo.id}>
+              {todo.title}
+            </label>
+            <span
+              aria-hidden="true"
+              class="todo__drag"
+              on:mousedown={handleMouseDown}
+              on:touchstart={handleMouseDown}
+            />
+            <button
+              aria-label={`Delete task ${todo.title}`}
+              class="todo__button"
+              on:click={handleDeleteTask(todo.id)}
+            />
+          </li>
+        {/each}
+      {:else}
+        <li class="todos__item">No todos yet</li>
+      {/if}
+    </ul>
     <div class="filter">
       <p class="filter__text">
         {todos.filter((todo) => !todo.done).length} items left
@@ -323,6 +322,42 @@
     margin-bottom: 0;
   }
 
+  @mixin button-opacity {
+    --button-opacity: 1;
+
+    @media screen and (min-width: 768px) {
+      --button-opacity: 0;
+
+      &:hover {
+        --button-opacity: 1;
+      }
+    }
+  }
+
+  @mixin hide-button($image, $size) {
+    background-image: url($image);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: transparent;
+    border: none;
+    margin-left: auto;
+    width: $size;
+    height: $size;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    opacity: var(--button-opacity);
+    @include focus-visible;
+    @include scale-hover;
+
+    @media screen and (min-width: 768px) {
+      transition: opacity 0.5s;
+
+      &:focus {
+        --button-opacity: 1;
+      }
+    }
+  }
+
   .main {
     max-width: 540px;
     padding-bottom: 1rem;
@@ -336,6 +371,13 @@
     align-items: center;
     background-color: var(--element-color);
     border-radius: $border-radius;
+    padding-right: 1rem;
+    --button-opacity: 1;
+    @include button-opacity;
+
+    @media screen and (min-width: 768px) {
+      padding-right: 1.5rem;
+    }
 
     &__checkbox {
       @include checkbox;
@@ -355,6 +397,10 @@
       &:focus {
         @include outline;
       }
+    }
+
+    &__submit {
+      @include hide-button("../assets/images/edit-pen.svg", 20px);
     }
   }
 
@@ -385,15 +431,8 @@
     align-items: center;
     background-color: var(--element-color);
     border-bottom: 1px solid var(--border-color);
-    --button-opacity: 1;
-
-    @media screen and (min-width: 768px) {
-      --button-opacity: 0;
-
-      &:hover {
-        --button-opacity: 1;
-      }
-    }
+    @include button-opacity;
+    --cursor: pointer;
 
     &--position {
       position: absolute;
@@ -401,6 +440,8 @@
       top: 0;
       left: 0;
       width: 300px;
+      cursor: grabbing;
+      --cursor: grabbing;
 
       @media screen and (min-width: 768px) {
         width: var(--ghost-width);
@@ -419,18 +460,16 @@
       transition: color 0.2s;
       text-align: start;
       overflow-wrap: break-word;
-      cursor: pointer;
+      cursor: var(--cursor);
     }
 
     &__drag {
       content: url(../assets/images/object-selected.svg);
-      cursor: move;
       width: 20px;
       height: 20px;
       opacity: var(--button-opacity);
+      cursor: grab;
       -webkit-tap-highlight-color: transparent;
-      filter: invert(27%) sepia(38%) saturate(428%) hue-rotate(197deg)
-        brightness(96%) contrast(89%);
       user-select: none;
 
       @media screen and (min-width: 768px) {
@@ -439,27 +478,8 @@
     }
 
     &__button {
-      background-image: url(../assets/images/icon-cross.svg);
-      background-repeat: no-repeat;
-      background-position: center;
-      background-color: transparent;
+      @include hide-button("../assets/images/icon-cross.svg", 12px);
       margin: 15px 20px 15px 20px;
-      border: none;
-      width: 12px;
-      height: 12px;
-      cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
-      opacity: var(--button-opacity);
-      @include focus-visible;
-      @include scale-hover;
-
-      @media screen and (min-width: 768px) {
-        transition: opacity 0.5s;
-      }
-
-      &:active {
-        background-color: transparent;
-      }
     }
   }
 

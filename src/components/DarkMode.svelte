@@ -18,6 +18,7 @@
     width: 20px;
     height: 20px;
     cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
     user-select: none;
     transition: transform 0.3s;
 
