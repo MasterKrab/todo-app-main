@@ -33,7 +33,7 @@
 
   $: localStorage.setItem("todos", JSON.stringify(todos));
 
-  let filterClass = "all";
+  let filterMode = "all";
 
   let filterCb = (todo) => todo;
 
@@ -41,17 +41,17 @@
 
   const handleShowAll = () => {
     filterCb = (todo) => todo;
-    filterClass = "all";
+    filterMode = "all";
   };
 
   const handleFilterActive = () => {
     filterCb = (todo) => !todo.done;
-    filterClass = "active";
+    filterMode = "active";
   };
 
   const handleFilterCompleted = () => {
     filterCb = (todo) => todo.done;
-    filterClass = "completed";
+    filterMode = "completed";
   };
 
   // Drag and drop
@@ -169,12 +169,14 @@
             <label class="todo__title" for={todo.id}>
               {todo.title}
             </label>
-            <span
-              aria-hidden="true"
-              class="todo__drag"
-              on:mousedown={handleMouseDown}
-              on:touchstart={handleMouseDown}
-            />
+            {#if filterMode === "all"}
+              <span
+                aria-hidden="true"
+                class="todo__drag"
+                on:mousedown={handleMouseDown}
+                on:touchstart={handleMouseDown}
+              />
+            {/if}
             <button
               aria-label={`Delete task ${todo.title}`}
               class="todo__button"
@@ -191,17 +193,17 @@
         {todos.filter((todo) => !todo.done).length} items left
       </p>
       <ul class="filter-list">
-        <li class:active={filterClass === "all"}>
+        <li class:active={filterMode === "all"}>
           <button class="filter-list__button" on:click={handleShowAll}
             >All</button
           >
         </li>
-        <li class:active={filterClass === "active"}>
+        <li class:active={filterMode === "active"}>
           <button class="filter-list__button" on:click={handleFilterActive}>
             Active
           </button>
         </li>
-        <li class:active={filterClass === "completed"}>
+        <li class:active={filterMode === "completed"}>
           <button class="filter-list__button" on:click={handleFilterCompleted}
             >Completed</button
           >
@@ -212,7 +214,9 @@
       >
     </div>
   </div>
-  <p class="drag">Drag and drop to reorder list</p>
+  {#if filterMode === "all"}
+    <p class="drag">Drag and drop to reorder list</p>
+  {/if}
 </main>
 
 <style lang="scss">
